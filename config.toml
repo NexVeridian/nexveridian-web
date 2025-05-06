@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://nexveridian.com"
+base_url = "https://blog.nexveridian.com/"
 
 # The site title and description; used in feeds by default.
 title = ""
@@ -38,15 +38,15 @@ menu_items = [
 
     # each of these is optional, name and url are required
     # $BASE_URL is going to be substituted by base_url from configuration
-    { name = "blog", url = "$BASE_URL" },
+    { name = "home", url = "$BASE_URL" },
 
     # tags should only be enabled if you have "tags" taxonomy
     # see documentation below for more details
+    { name = "blog", url = "$BASE_URL/archive" },
     { name = "tags", url = "$BASE_URL/tags" },
-    { name = "archive", url = "$BASE_URL/archive" },
     { name = "about me", url = "$BASE_URL/about" },
 
-    { name = "resume", url = "$BASE_URL/Elijah_McMorris_Resume.pdf" },
+    { name = "resume", url = "$BASE_URL/Elijah_McMorris_Resume.pdf", newtab = true },
 ]
 
 show_only_description = true

@@ -1,6 +1,7 @@
 +++
 title = "Welcome to Terminimal Theme for Zola"
 date = 2019-02-04
+# description = "A showcase post for the Terminimal theme."
 
 [taxonomies]
 tags = ["zola", "theme", "showcase"]
@@ -16,7 +17,7 @@ Code block (using "boron" theme):
 class HelloPrinter:
     def __init__(self, thing):
         self.thing = thing
-        
+
     def __call__(self):
         print(f"Hello, {self.thing}!")
 

@@ -29,7 +29,7 @@
 
         # Create a Docker image with static-web-server to serve the site
         my-docker = pkgs.dockerTools.buildImage {
-          name = "my-zola";
+          name = "nexveridian-web";
           tag = "latest";
           created = "now";
 
