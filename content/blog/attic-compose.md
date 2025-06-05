@@ -1,5 +1,5 @@
 +++
-title = "Deploying Attic Nix Binary Cache With Docker Compose, for local use and CI"
+title = "Deploying `Attic` Nix Binary Cache With Docker Compose, for local use and CI"
 date = 2025-05-06
 # description = "Deploying Attic Nix Binary Cache With Docker Compose."
 
