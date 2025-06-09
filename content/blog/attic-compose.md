@@ -10,15 +10,96 @@ tags = ["nix", "docker", "CI", "cache", "github-actions"]
 ## Server Install
 Install docker and docker compose
 
-`git clone git@github.com:NexVeridian/attic-compose.git`
+### Example `docker-compose.yaml`
+```yaml
+services:
+  attic:
+    container_name: attic
+    image: ghcr.io/zhaofengli/attic:latest
+    command: ["-f", "/attic/server.toml"]
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks:
+      attic:
+      db:
+    volumes:
+      - ./server.toml:/attic/server.toml
+      - attic-data:/attic/storage
+    env_file:
+      - prod.env
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://attic:8080 || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
-See `/scr`, create a `prod.env` and `server.toml` files
+  db:
+    container_name: db
+    image: postgres:17.2-alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    networks:
+      db:
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - prod.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-then run
+volumes:
+  attic-data:
+  postgres-data:
 
+networks:
+  attic:
+  db:
+```
+
+### Example `server.toml`
+```toml
+listen = "[::]:8080"
+
+[database]
+url = "postgres://attic:attic@db:5432/attic_prod"
+
+[storage]
+type = "local"
+path = "/attic/storage"
+
+[chunking]
+nar-size-threshold = 65536
+min-size = 16384
+avg-size = 65536
+max-size = 262144
+
+[compression]
+type = "zstd"
+
+[garbage-collection]
+interval = "12 hours"
+```
+
+### Example `prod.env`
 ```bash
-just up
-just create_token <your username here>
+POSTGRES_DB=attic_prod
+POSTGRES_USER=attic
+POSTGRES_PASSWORD=attic
+DATABASE_URL=postgres://attic:attic@localhost:5432/attic_prod
+ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64="<openssl rand 64 | base64 -w0>"
 ```
 
 ### Exmaple Traefik Label
@@ -43,6 +124,13 @@ attic:
 
 ### Cloudflare
 If you are using cloudflare make the subdomain DNS only
+
+### Create the Token
+```bash
+docker compose up
+
+docker exec -it attic sh -c 'atticadm make-token --sub "{{<your username here>}}" --validity "10y" --pull "*" --push "*" --create-cache "*" --configure-cache "*" --configure-cache-retention "*" --destroy-cache "*" --delete "*" -f "./attic/server.toml"'
+```
 
 ### Check if it works
 If working `nix.example.com` should say `attic push`
