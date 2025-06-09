@@ -54,12 +54,13 @@ https://huggingface.co/docs/hub/en/mlx
 
 https://huggingface.co/mlx-community
 
+git clone git@github.com:NexVeridian/NexVeridian-web.git
 ```bash
 uv venv
 uv pip install huggingface_hub hf_transfer mlx_lm
 uv run huggingface-cli login
 
-just mlx_create "Qwen/QwQ-32B" "4 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" "false"
+just mlx_create "Qwen/QwQ-32B" "4 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" "mlx-community" "false"
 # or
 uv run mlx_lm.convert --hf-path Qwen/QwQ-32B -q --q-bits 4 --upload-repo mlx-community/QwQ-32B-4bit --mlx-path /Users/elijahmcmorris/.cache/lm-studio/models/mlx-community/QwQ-32B-4bit
 ```
