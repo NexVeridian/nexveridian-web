@@ -167,17 +167,46 @@ Add the token named from `just create_token`, named ATTIC_TOKEN, to your reposit
 ```yaml
 steps:
   - uses: actions/checkout@v3
-  - uses: DeterminateSystems/nix-installer-action@main
+  - uses: nixbuild/nix-quick-install-action@v32
+    with:
+      nix_conf: |
+        keep-env-derivations = true
+        keep-outputs = true
+
+  # For cacheing the attic package in github actions storage
+  - name: Restore Nix store cache
+    id: cache-nix-restore
+    uses: nix-community/cache-nix-action/restore@v6
+    with:
+      primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+      restore-prefixes-first-match: nix-${{ runner.os }}-
+
   - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client login <pick a name for server> https://nix.example.com ${{ secrets.ATTIC_TOKEN }} || true
   - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache create <cache name> || true
   - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client use <cache name> || true
 
-  # `nix-fast-build` is faster then `nix flake check` in my testing, and has support for pushing to attic after each build is finished
+  # For cacheing the attic package in github actions storage
+  - run: nix build -I nixpkgs=channel:nixos-unstable nixpkgs#nix-fast-build
+  - name: Save Nix store cache
+    id: cache-nix-save
+    uses: nix-community/cache-nix-action/save@v6
+    with:
+      primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+      gc-max-store-size-linux: 2G
+      purge: true
+      purge-prefixes: nix-${{ runner.os }}-
+      purge-created: 0
+      purge-last-accessed: 0
+      purge-primary-key: never
+
+  # `nix-fast-build` is faster then `nix flake check` in my testing
   # - run: nix flake check --all-systems
-  - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#nix-fast-build -- --attic-cache <cache name> --no-nom --skip-cached
+  # `--attic-cache` will fail if the cache is down
+  # - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#nix-fast-build -- --attic-cache <cache name> --no-nom --skip-cached
+  - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#nix-fast-build -- --no-nom --skip-cached
 
   - run: |
-      for i in {1..5}; do
+      for i in {1..10}; do
         nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client push <cache name> /nix/store/*/ && break || [ $i -eq 5 ] || sleep 5
       done
 ```
