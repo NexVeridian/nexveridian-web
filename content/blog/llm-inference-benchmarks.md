@@ -56,12 +56,14 @@ https://huggingface.co/mlx-community
 
 git clone git@github.com:NexVeridian/NexVeridian-web.git
 ```bash
+just uv
+
+just mlx_create "Qwen/QwQ-32B" "4 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" "mlx-community" fasle false
+# or
 uv venv
 uv pip install huggingface_hub hf_transfer mlx_lm
 uv run huggingface-cli login
 
-just mlx_create "Qwen/QwQ-32B" "4 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" "mlx-community" "false"
-# or
 uv run mlx_lm.convert --hf-path Qwen/QwQ-32B -q --q-bits 4 --upload-repo mlx-community/QwQ-32B-4bit --mlx-path /Users/elijahmcmorris/.cache/lm-studio/models/mlx-community/QwQ-32B-4bit
 ```
 or use https://huggingface.co/spaces/mlx-community/mlx-my-repo
@@ -76,12 +78,6 @@ or use https://huggingface.co/spaces/mlx-community/mlx-my-repo
 | Temp | Min P | Top P | Top K | Repeat P |
 |------|-------|-------|-------|----------|
 | 0.7  | 0.00  | 0.80  | 20    | 1.5      |
-
-## QWQ
-| Temp | Min P | Top P | Repeat P |
-|------|-------|-------|----------|
-| 0.7  | 0.05  | 0.95  | -        |
-| 1.5  | 0.10  | 1.00  | -        |
 
 ## Prompt Template
 ```
