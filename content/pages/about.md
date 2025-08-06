@@ -10,10 +10,12 @@ I've contributed multiple substantial code PRs to JupyterLab and Loco.rs, create
 # Contact Me:
 - [Email](mailto:nexveridian@gmail.com)
 - [Calendly](https://calendly.com/nexveridian/main)
+
+# Main Accounts:
 - [GitHub](https://github.com/NexVeridian)
-- [LinkedIn](https://www.linkedin.com/in/nexveridian)
+- [HuggingFace](https://huggingface.co/NexVeridian)
 - [X](https://x.com/nexveridian)
 
-# Less Active Accounts:
+# Other Accounts:
 - [Bluesky](https://bsky.app/profile/nexveridian.bsky.social)
-- [HuggingFace](https://huggingface.co/NexVeridian)
+- [LinkedIn](https://www.linkedin.com/in/nexveridian)
