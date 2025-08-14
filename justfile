@@ -125,3 +125,62 @@ clean_lmstudio hf_url quant lm_studio_path org="mlx-community" type="":
     for q in {{quant}}; do
         rm -r {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit{{type}} || true
     done
+
+process_single_model hf_url:
+    #!/usr/bin/env bash
+    export HF_HUB_CACHE="/Volumes/hf-cache/huggingface/hub"
+    # Store original HF_HUB_CACHE
+    ORIGINAL_HF_HUB_CACHE="${HF_HUB_CACHE:-}"
+
+    model="{{hf_url}}"
+    echo "Processing model: $model"
+
+    # Convert model path to cache directory format (org--model)
+    model_cache_name=$(echo "$model" | sed 's/\//--/g' | sed 's/^/models--/')
+
+    echo "Copying $model_cache_name from NAS..."
+    rclone copyto -P --fast-list --copy-links --transfers 32 --multi-thread-streams 32 \
+        "tower:hf-cache/huggingface/hub/$model_cache_name" \
+        "$HOME/.cache/huggingface/hub/$model_cache_name"
+
+    # Set HF_HUB_CACHE to local cache
+    export HF_HUB_CACHE="$HOME/.cache/huggingface/hub"
+
+    echo "Processing quantizations for $model..."
+    just mlx_create "$model" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
+
+    rclone copyto -P --fast-list --copy-links --transfers 32 --multi-thread-streams 32 \
+        "$HOME/.cache/huggingface/hub/$model_cache_name" \
+        "tower:hf-cache/huggingface/hub/$model_cache_name"
+
+    # Clean up local model cache
+    echo "Cleaning up local cache for $model..."
+    rm -rf "$HOME/.cache/huggingface/hub/$model_cache_name"
+    just clean_hf
+
+    # Reset HF_HUB_CACHE to original value
+    if [[ -n "$ORIGINAL_HF_HUB_CACHE" ]]; then
+        export HF_HUB_CACHE="$ORIGINAL_HF_HUB_CACHE"
+    else
+        unset HF_HUB_CACHE
+    fi
+
+    echo "Completed processing $model"
+
+create_all:
+    #!/usr/bin/env bash
+    # List of models to process
+    models=(
+        # "Qwen/Qwen3-Coder-30B-A3B-Instruct"
+        # "Qwen/Qwen3-Coder-480B-A35B-Instruct"
+        # "moonshotai/Kimi-Dev-72B"
+        # "zai-org/GLM-4.5-Air"
+        # "openai/gpt-oss-20b"
+        # "openai/gpt-oss-120b"
+        "rednote-hilab/dots.llm1.inst"
+    )
+
+    for model in "${models[@]}"; do
+        echo "Processing model: $model"
+        just process_single_model "$model"
+    done
