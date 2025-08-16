@@ -9,7 +9,7 @@ I've contributed multiple substantial code PRs to JupyterLab and Loco.rs, create
 
 # Contact Me:
 - [Email](mailto:nexveridian@gmail.com)
-- [Calendly](https://calendly.com/nexveridian/main)
+- [Schedule a Meeting](https://calendly.com/nexveridian/main)
 
 # Main Accounts:
 - [GitHub](https://github.com/NexVeridian)
