@@ -18,7 +18,7 @@ uv:
     uv run hf auth login
 
 uv_install:
-    uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken
+    uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken blobfile
     # uv pip install -U huggingface_hub hf_transfer "git+https://github.com/ml-explore/mlx-lm@main" "git+https://github.com/ml-explore/mlx-lm@main[train]"
 
 # just mlx_create "Qwen/Qwen3-30B-A3B" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
@@ -171,13 +171,18 @@ create_all:
     #!/usr/bin/env bash
     # List of models to process
     models=(
+        # Qwen/Qwen3-30B-A3B-Instruct-2507
+        # Qwen/Qwen3-30B-A3B-Thinking-2507
         # "Qwen/Qwen3-Coder-30B-A3B-Instruct"
         # "Qwen/Qwen3-Coder-480B-A35B-Instruct"
-        # "moonshotai/Kimi-Dev-72B"
-        # "zai-org/GLM-4.5-Air"
         # "openai/gpt-oss-20b"
         # "openai/gpt-oss-120b"
-        "rednote-hilab/dots.llm1.inst"
+        # janhq/Jan-v1-4B
+        # moonshotai/Kimi-VL-A3B-Thinking-2506
+        # nvidia/OpenReasoning-Nemotron-1.5B
+        # nvidia/OpenReasoning-Nemotron-7B
+        # nvidia/OpenReasoning-Nemotron-14B
+        # nvidia/OpenReasoning-Nemotron-32B
     )
 
     for model in "${models[@]}"; do
