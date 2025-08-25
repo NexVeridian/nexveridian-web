@@ -47,6 +47,7 @@ menu_items = [
     { name = "About Me", url = "$BASE_URL/about" },
 
     { name = "Resume", url = "$BASE_URL/Elijah_McMorris_Resume.pdf", newtab = true },
+    { name = "Git.Nexv.dev", url = "https://git.nexveridian.com/NexVeridian", newtab = true },
 ]
 
 show_only_description = true

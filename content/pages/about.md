@@ -12,9 +12,10 @@ I've contributed multiple substantial code PRs to JupyterLab and Loco.rs, create
 - [Schedule a Meeting](https://calendly.com/nexveridian/main)
 
 # Main Accounts:
-- [GitHub](https://github.com/NexVeridian)
-- [HuggingFace](https://huggingface.co/NexVeridian)
+- [Git.Nexv.dev](https://git.nexveridian.com/NexVeridian)
 - [X](https://x.com/nexveridian)
+- [HuggingFace](https://huggingface.co/NexVeridian)
+- [GitHub](https://github.com/NexVeridian)
 
 # Other Accounts:
 - [Bluesky](https://bsky.app/profile/nexveridian.bsky.social)
