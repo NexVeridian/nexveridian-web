@@ -18,8 +18,8 @@ uv:
     uv run hf auth login
 
 uv_install:
-    uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken blobfile
-    # uv pip install -U huggingface_hub hf_transfer "git+https://github.com/ml-explore/mlx-lm@main" "git+https://github.com/ml-explore/mlx-lm@main[train]"
+    # uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken blobfile
+    uv pip install -U huggingface_hub hf_transfer "git+https://github.com/ml-explore/mlx-lm@main" "git+https://github.com/ml-explore/mlx-lm@main[train]" tiktoken blobfile
 
 # just mlx_create "Qwen/Qwen3-30B-A3B" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
 mlx_create hf_url quant lm_studio_path org="mlx-community" upload_repo="false" clean="true":
@@ -54,7 +54,7 @@ mlx_create hf_url quant lm_studio_path org="mlx-community" upload_repo="false" c
         fi
     done
 
-# just mlx_create_dynamic "Qwen/Qwen3-14B" 4 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
+# just mlx_create_dynamic "Qwen/Qwen3-14B" 5 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
 # https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LEARNED_QUANTS.md
 mlx_create_dynamic hf_url low high lm_studio_path org="mlx-community" upload_repo="false" clean="true":
     #!/usr/bin/env bash
@@ -155,8 +155,8 @@ process_single_model hf_url:
 
     # Clean up local model cache
     echo "Cleaning up local cache for $model..."
-    rm -rf "$HOME/.cache/huggingface/hub/$model_cache_name"
-    just clean_hf
+    # rm -rf "$HOME/.cache/huggingface/hub/$model_cache_name"
+    just clean_hf || true
 
     # Reset HF_HUB_CACHE to original value
     if [[ -n "$ORIGINAL_HF_HUB_CACHE" ]]; then
@@ -183,6 +183,7 @@ create_all:
         # nvidia/OpenReasoning-Nemotron-7B
         # nvidia/OpenReasoning-Nemotron-14B
         # nvidia/OpenReasoning-Nemotron-32B
+        # ByteDance-Seed/Seed-OSS-36B-Instruct
     )
 
     for model in "${models[@]}"; do
