@@ -40,8 +40,9 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       # - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client login nex https://nix.nexveridian.com ${{ secrets.ATTIC_TOKEN }} || true
-      # - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache create NexVeridian-web || true
-      # - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client use NexVeridian-web || true
+      # - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache create nexveridian-web || true
+      # - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache configure nexveridian-web -- --priority 30 || true
+      # - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client use nexveridian-web || true
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
@@ -90,5 +91,5 @@ jobs:
 
       # - run: |
       #     for i in {1..10}; do
-      #       nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client push NexVeridian-web /nix/store/*/ && break || [ $i -eq 5 ] || sleep 5
+      #       nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client push nexveridian-web /nix/store/*/ && break || [ $i -eq 5 ] || sleep 5
       #     done

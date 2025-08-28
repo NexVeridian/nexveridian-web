@@ -1,3 +1,26 @@
++++
+title = "Pushing container images in Forgejo actions"
+date = 2025-08-27
+
+[taxonomies]
+tags = ["forgejo", "nix", "CI", "actions", "docker"]
++++
+
+## Pushing container images
+With GitHub actions most people use `docker push` to push their images to a registry.
+
+With Forgejo actions, that probably won't work. because of docker-in-docker. Instead, you can use the `skopeo` to push your images to a registry.
+
+To Setup `CONTAINER_TOKEN`:
+- create a token https://git.example.com/user/settings/applications
+- then add the token to your secrets https://forgejo.example.com/user/settings/actions/secrets
+
+### Note:
+Forgejo create a [Automatic token](https://forgejo.org/docs/latest/user/actions/basic-concepts/#automatic-token) with each workflow run.
+
+But you can't use it to push images to a registry.
+
+```yaml
 name: docker
 
 on:
@@ -19,10 +42,10 @@ jobs:
       id-token: write
 
     steps:
-      - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client login nex https://nix.nexveridian.com ${{ secrets.ATTIC_TOKEN }} || true
-      - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache create nexveridian-web || true
-      - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache configure nexveridian-web -- --priority 30 || true
-      - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client use nexveridian-web || true
+      - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client login nex https://nix.example.com ${{ secrets.ATTIC_TOKEN }} || true
+      - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache create <cache name> || true
+      - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache configure <cache name> -- --priority 30 || true
+      - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client use <cache name> || true
 
       - name: Install Node.js
         run: |
@@ -32,7 +55,7 @@ jobs:
           ln -sf ~/.local/nodejs/bin/npm ~/.local/bin/npm
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
 
       - name: Install skopeo
         run: |
@@ -116,6 +139,7 @@ jobs:
 
           if [ -n "$valid_paths" ]; then
             for i in {1..10}; do
-              nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client push nexveridian-web $valid_paths && break || [ $i -eq 5 ] || sleep 5
+              nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client push <cache name> $valid_paths && break || [ $i -eq 5 ] || sleep 5
             done
           fi
+```
