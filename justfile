@@ -4,6 +4,13 @@ run:
 update:
     nix flake update
 
+watch:
+    typst watch Elijah_McMorris_Resume.typ
+
+pdf:
+    typst compile Elijah_McMorris_Resume.typ
+    mv Elijah_McMorris_Resume.pdf static/
+
 docker:
     nix build .#packages.x86_64-linux.my-docker
     docker load < ./result
