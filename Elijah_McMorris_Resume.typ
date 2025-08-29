@@ -1,18 +1,18 @@
 #set page(
   paper: "us-letter",
- margin: (
-   top: 0.5in,
-   bottom: 0.5in,
-   left: 0.5in,
-   right: 0.5in
- )
+  margin: (
+    top: 0.5in,
+    bottom: 0.5in,
+    left: 0.5in,
+    right: 0.5in,
+  ),
 )
 
 #set text(
   font: "Arial",
   size: 11pt,
   lang: "en",
-  ligatures: false
+  ligatures: false,
 )
 
 #show link: set text(rgb("#26428b"))
@@ -22,10 +22,15 @@
 #align(center)[
   #pad(top: 0pt, bottom: 0pt, [#text(16pt)[*Elijah McMorris*]])
 
-  #link("mailto:NexVeridian@gmail.com") | Seattle, WA | 425-236-8715 | #link("https://calendly.com/nexveridian/main")[Schedule a Meeting]
+  #link("mailto:NexVeridian@gmail.com") | Seattle, WA | 425-236-8715 | #link(
+    "https://calendly.com/nexveridian/main",
+  )[Schedule a Meeting]
 
-  #link("https://git.nexveridian.com/NexVeridian")[Git.Nexv.dev/NexVeridian] | #link("https://github.com/NexVeridian")[GitHub.com/NexVeridian] |
-  #link("https://nexv.dev")[Nexv.dev] | #link("https://linkedin.com/in/NexVeridian")[LinkedIn.com/in/NexVeridian]
+  #link("https://git.nexveridian.com/NexVeridian")[Git.Nexv.dev/NexVeridian] | #link(
+    "https://github.com/NexVeridian",
+  )[GitHub.com/NexVeridian] | #link("https://nexv.dev")[Nexv.dev] | #link(
+    "https://linkedin.com/in/NexVeridian",
+  )[LinkedIn.com/in/NexVeridian]
 ]
 
 
@@ -52,38 +57,45 @@
 ])
 #line(length: 100%, stroke: 1pt)
 
-#link("https://github.com/jupyterlab/jupyterlab/issues?q=state%3Aclosed%20is%3Apr%20author%3Anexveridian%20is%3Amerged")[
+#link(
+  "https://github.com/jupyterlab/jupyterlab/issues?q=state%3Aclosed%20is%3Apr%20author%3Anexveridian%20is%3Amerged",
+)[
   *JupyterLab*] | A web IDE for notebooks, code, and data science
 - #link("https://github.com/jupyterlab/jupyterlab/pull/16341")[
-  [\#16341]] Adds a button that finds and shuts down kernels that are not attached to an open notebook
+    [\#16341]] Adds a button that finds and shuts down kernels that are not attached to an open notebook
 - #link("https://github.com/jupyterlab/jupyterlab/pull/16265")[
-  [\#16265]] Add a checkbox and a setting to skip showing the kernel restart dialog box when checked
+    [\#16265]] Add a checkbox and a setting to skip showing the kernel restart dialog box when checked
 - #link("https://github.com/jupyterlab/jupyterlab/pull/16208")[
-  [\#16208]] Fix to correctly clear the output area of a cell in the notebook
+    [\#16208]] Fix to correctly clear the output area of a cell in the notebook
 
 #link("https://github.com/loco-rs/loco/issues?q=is%3Apr%20author%3Anexveridian%20(is%3Amerged%20OR%20is%3Aopen%20)")[
   *Loco.rs*] | A Rust MVC web framework inspired by Rails
 - #link("https://github.com/loco-rs/loco/pull/1093")[
-  [\#1093]] Allows some tests to run in parallel by using different ports, decreasing test time by 65-90%
+    [\#1093]] Allows some tests to run in parallel by using different ports, decreasing test time by 65-90%
 - #link("https://github.com/loco-rs/loco/pull/1204")[
-  [\#1204]] Makes background worker tests parallel, by using different database names
+    [\#1204]] Makes background worker tests parallel, by using different database names
 - #link("https://github.com/loco-rs/loco/pull/1360")[
-  [\#1360]] Adds support for return yaml responses from routes
-- #link("https://github.com/loco-rs/loco/issues?q=is%3Apr%20author%3Anexveridian%20(is%3Amerged%20OR%20is%3Aopen%20)")[
-  +14 more PRs]
+    [\#1360]] Adds support for return yaml responses from routes
+- #link(
+    "https://github.com/loco-rs/loco/issues?q=is%3Apr%20author%3Anexveridian%20(is%3Amerged%20OR%20is%3Aopen%20)",
+  )[
+    +14 more PRs]
 
 #link("https://github.com/loco-rs/loco-openapi-Initializer")[
-  *Loco OpenAPI*] | Created an official extension for #link("https://github.com/loco-rs")[Loco.rs] adding OpenAPI integration
+  *Loco OpenAPI*] | Created an official extension for #link("https://github.com/loco-rs")[Loco.rs] adding OpenAPI
+integration
 - Automatically generates the OpenAPI specification and documentation for the routes
 - Serves the OpenAPI documentation using either Swagger-ui, Redoc, or Scalar
 
 #link("https://zed.dev/")[
   *Zed.dev*] | A next-generation code editor designed for high-performance
 - #link("https://github.com/zed-industries/zed/pull/25606")[
-  [\#25606]] Fixes showing the max_tokens for each model in the assistant panel
+    [\#25606]] Fixes showing the max_tokens for each model in the assistant panel
 
 #link("https://github.com/search?q=is%3Apr+author%3ANexVeridian+docs&type=pullrequests")[
-  +12 documentation PRs] to multiple projects and #link("https://github.com/NixOS/nixpkgs/pulls?q=is%3Apr+author%3ANexVeridian+")[
+  +12 documentation PRs] to multiple projects and #link(
+  "https://github.com/NixOS/nixpkgs/pulls?q=is%3Apr+author%3ANexVeridian+",
+)[
   PRs to Nixpkgs]
 
 #pad(top: 1em, bottom: 0em, [
@@ -92,7 +104,9 @@
 #line(length: 100%, stroke: 1pt)
 #link("https://ark.nexveridian.com/ARK/ARKK")[
   *Ark.Nexv.dev*] | #link("https://api.nexveridian.com/")[
-  *Nexv.dev*] | *ETF Holding Tracker* | Next.js, TypeScript, Rust | #link("https://github.com/NexVeridian/ark-invest-api-rust")[
+  *Nexv.dev*] | *ETF Holding Tracker* | Next.js, TypeScript, Rust | #link(
+  "https://github.com/NexVeridian/ark-invest-api-rust",
+)[
   [GitHub]]
 - Created and retrieves data from a REST API for the holdings of 25 ETFs and updated daily
 - Visualizes it in an interactive chart, showing the ETF holdings over time
@@ -110,7 +124,10 @@
 
 *Developer Tools*: Docker, Git, GitHub, SSH, Cloudflare, AWS, Azure, VPS, Docker Compose
 
-*Libraries*: Next.js, React, MySQL, Postgres, RDBMS, Tailwind CSS, Traefik, Nginx, Pandas, Numpy, Spark, Django, Flask, MVC, Shadcn/ui, Swagger, Redoc, Axum, Polars, GitHub Actions
+*Libraries*: Next.js, React, MySQL, Postgres, RDBMS, Tailwind CSS, Traefik, Nginx, Pandas, Numpy, Spark, Django, Flask,
+MVC, Shadcn/ui, Swagger, Redoc, Axum, Polars, GitHub Actions
 
-*Certifications*: Microsoft Office Specialist: Excel (Office 2016) - MOS Exam 77-727 #link("https://www.credly.com/badges/8facfa32-3a3d-46bf-9e68-f1caad0f7801/public_url")[
+*Certifications*: Microsoft Office Specialist: Excel (Office 2016) - MOS Exam 77-727 #link(
+  "https://www.credly.com/badges/8facfa32-3a3d-46bf-9e68-f1caad0f7801/public_url",
+)[
   [Credly]]
