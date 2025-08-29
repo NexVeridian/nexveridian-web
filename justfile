@@ -25,8 +25,8 @@ uv:
     uv run hf auth login
 
 uv_install:
-    # uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken blobfile
-    uv pip install -U huggingface_hub hf_transfer "git+https://github.com/ml-explore/mlx-lm@main" "git+https://github.com/ml-explore/mlx-lm@main[train]" tiktoken blobfile
+    uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken blobfile
+    # uv pip install -U huggingface_hub hf_transfer "git+https://github.com/ml-explore/mlx-lm@main" "git+https://github.com/ml-explore/mlx-lm@main[train]" tiktoken blobfile
 
 # just mlx_create "Qwen/Qwen3-30B-A3B" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
 mlx_create hf_url quant lm_studio_path org="mlx-community" upload_repo="false" clean="true":
@@ -108,7 +108,7 @@ mlx_create_dynamic hf_url low high lm_studio_path org="mlx-community" upload_rep
 # just mlx_create_dwq "Qwen/Qwen3-30B-A3B" "4" "8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
 # https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LEARNED_QUANTS.md
 # https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/quant/dwq.py
-mlx_create_dwq hf_url quant teacher_q lm_studio_path org="mlx-community" upload_repo="false" clean="true" :
+mlx_create_dwq hf_url quant teacher_q samples lm_studio_path org="mlx-community" upload_repo="false" clean="true" :
     #!/usr/bin/env bash
     just uv_install
     repo_name=$(basename {{hf_url}})
@@ -121,10 +121,8 @@ mlx_create_dwq hf_url quant teacher_q lm_studio_path org="mlx-community" upload_
             uv run mlx_lm.dwq \
                 --model {{hf_url}} \
                 --bits ${q} \
-                # --group-size 32 \
-                # --num-samples 512 \
+                --num-samples {{samples}} \
                 --batch-size 1 \
-                # --max-seq-length 512 \
                 --mlx-path {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit-DWQ
 
             if [[ {{upload_repo}} == "true" ]]; then
@@ -148,10 +146,8 @@ mlx_create_dwq hf_url quant teacher_q lm_studio_path org="mlx-community" upload_
                 --model {{hf_url}} \
                 --quantized-model {{org}}/${repo_name}-{{teacher_q}}bit \
                 --bits ${q} \
-                # --group-size 32 \
-                # --num-samples 512 \
+                --num-samples {{samples}} \
                 --batch-size 1 \
-                # --max-seq-length 512 \
                 --mlx-path {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit-DWQ-{{teacher_q}}bit
 
             if [[ {{upload_repo}} == "true" ]]; then
@@ -202,16 +198,14 @@ process_single_model hf_url:
     just mlx_create "$model" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
     # just mlx_create_dynamic "$model" 5 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
     # just mlx_create_dynamic "$model" 4 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
-    # just mlx_create_dwq "$model" "5" "8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
+    # just mlx_create_dwq "$model" "5 4" "16" "2048" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
 
     rclone copyto -P --fast-list --copy-links --transfers 32 --multi-thread-streams 32 \
         "$HOME/.cache/huggingface/hub/$model_cache_name" \
         "tower:hf-cache/huggingface/hub/$model_cache_name"
 
-    # Clean up local model cache
     echo "Cleaning up local cache for $model..."
-    # rm -rf "$HOME/.cache/huggingface/hub/$model_cache_name"
-    just clean_hf || true
+    rm -rf "$HOME/.cache/huggingface/hub/$model_cache_name"
 
     # Reset HF_HUB_CACHE to original value
     if [[ -n "$ORIGINAL_HF_HUB_CACHE" ]]; then
@@ -226,6 +220,10 @@ create_all:
     #!/usr/bin/env bash
     # List of models to process
     models=(
+        swiss-ai/Apertus-8B-Instruct-2509
+        swiss-ai/Apertus-70B-Instruct-2509
+        NousResearch/Hermes-4-14B
+        # Qwen/Qwen3-0.6B
         # Qwen/Qwen3-1.7B
         # Qwen/Qwen3-4B-Instruct-2507
         # Qwen/Qwen3-4B-Thinking-2507
@@ -233,16 +231,19 @@ create_all:
         # Qwen/Qwen3-30B-A3B-Thinking-2507
         # "Qwen/Qwen3-Coder-30B-A3B-Instruct"
         # "Qwen/Qwen3-Coder-480B-A35B-Instruct"
-        # "openai/gpt-oss-20b"
-        # "openai/gpt-oss-120b"
-        # janhq/Jan-v1-4B
         # moonshotai/Kimi-VL-A3B-Thinking-2506
         # nvidia/OpenReasoning-Nemotron-1.5B
         # nvidia/OpenReasoning-Nemotron-7B
         # nvidia/OpenReasoning-Nemotron-14B
         # nvidia/OpenReasoning-Nemotron-32B
+        # nvidia/NVIDIA-Nemotron-Nano-9B-v2
+        # nvidia/NVIDIA-Nemotron-Nano-12B-v2
         # ByteDance-Seed/Seed-OSS-36B-Instruct
+        # "openai/gpt-oss-20b"
+        # "openai/gpt-oss-120b"
     )
+
+    just clean_hf || true
 
     for model in "${models[@]}"; do
         echo "Processing model: $model"
