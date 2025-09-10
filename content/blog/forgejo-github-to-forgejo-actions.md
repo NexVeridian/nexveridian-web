@@ -60,18 +60,18 @@ jobs:
       - name: Push to attic
         if: always()
         run: |
-          valid_paths=""
-          for path in /nix/store/*/; do
-            if nix path-info "$path" >/dev/null 2>&1; then
-              valid_paths="$valid_paths $path"
-            fi
-          done
+          nix shell nixpkgs/nixos-unstable#findutils nixpkgs/nixos-unstable#util-linux nixpkgs/nixos-unstable#coreutils -c bash -c '
+            valid_paths=$(find /nix/store -maxdepth 1 -type d -name "*-*" | \
+              head -1000 | \
+              xargs -I {} -P $(nproc) sh -c "nix path-info \"\$1\" >/dev/null 2>&1 && echo \"\$1\"" _ {} | \
+              tr "\n" " ")
 
-          if [ -n "$valid_paths" ]; then
-            for i in {1..10}; do
-              nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client push nextrack $valid_paths && break || [ $i -eq 5 ] || sleep 5
-            done
-          fi
+            if [ -n "$valid_paths" ]; then
+              for i in {1..10}; do
+                nix run nixpkgs/nixos-unstable#attic-client push <cache name> $valid_paths && break || [ $i -eq 10 ] || sleep 5
+              done
+            fi
+          '
 ```
 
 ## Forgejo Actions
@@ -253,16 +253,16 @@ jobs:
       - name: Push to attic
         if: always()
         run: |
-          valid_paths=""
-          for path in /nix/store/*/; do
-            if nix path-info "$path" >/dev/null 2>&1; then
-              valid_paths="$valid_paths $path"
-            fi
-          done
+          nix shell nixpkgs/nixos-unstable#findutils nixpkgs/nixos-unstable#util-linux nixpkgs/nixos-unstable#coreutils -c bash -c '
+            valid_paths=$(find /nix/store -maxdepth 1 -type d -name "*-*" | \
+              head -1000 | \
+              xargs -I {} -P $(nproc) sh -c "nix path-info \"\$1\" >/dev/null 2>&1 && echo \"\$1\"" _ {} | \
+              tr "\n" " ")
 
-          if [ -n "$valid_paths" ]; then
-            for i in {1..10}; do
-              nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client push <cache name> $valid_paths && break || [ $i -eq 5 ] || sleep 5
-            done
-          fi
+            if [ -n "$valid_paths" ]; then
+              for i in {1..10}; do
+                nix run nixpkgs/nixos-unstable#attic-client push <cache name> $valid_paths && break || [ $i -eq 10 ] || sleep 5
+              done
+            fi
+          '
 ```

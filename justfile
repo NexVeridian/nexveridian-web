@@ -222,6 +222,8 @@ create_all:
     #!/usr/bin/env bash
     # List of models to process
     models=(
+        # janhq/Jan-v1-4B
+        # janhq/Jan-v1-2509
         # NousResearch/Hermes-4-14B
         # LatitudeGames/Wayfarer-2-12B
         # LatitudeGames/Nova-70B-Llama-3.3
