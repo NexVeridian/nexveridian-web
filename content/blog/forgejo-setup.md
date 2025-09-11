@@ -100,10 +100,25 @@ forgejo-action:
         - ./forgejo-data:/data
     restart: "unless-stopped"
     # command: '/bin/sh -c "while : ; do sleep 1 ; done ;"'
-    command: '/bin/sh -c "sleep 5; forgejo-runner daemon"'
+    command: '/bin/sh -c "sleep 5; forgejo-runner --config config.yaml daemon"'
 ```
 
 ## Forgejo Actions
+```bash
+docker exec -it forgejo-action /bin/sh
+
+forgejo-runner register --no-interactive --token {TOKEN} --name runner --instance https://git.example.com --labels bookworm:docker://node:24-bookworm
+
+forgejo-runner generate-config > config.yaml
+```
+
+```yaml
+# config.yaml
+container:
+    force_pull: true
+    force_rebuild: true
+```
+
 ```json
 # .runner
 {
