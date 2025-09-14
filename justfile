@@ -28,7 +28,7 @@ uv_install:
     # uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken blobfile
     uv pip install -U huggingface_hub hf_transfer "git+https://github.com/ml-explore/mlx-lm@main" "git+https://github.com/ml-explore/mlx-lm@main[train]" tiktoken blobfile
 
-# just mlx_create "Qwen/Qwen3-30B-A3B" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
+# just mlx_create "Qwen/Qwen3-30B-A3B-Instruct" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
 mlx_create hf_url quant lm_studio_path org="mlx-community" upload_repo="false" clean="true":
     #!/usr/bin/env bash
     just uv_install
@@ -176,7 +176,7 @@ clean_lmstudio hf_url quant lm_studio_path org="mlx-community" type="":
         rm -r {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit{{type}} || true
     done
 
-process_single_model hf_url:
+process_single_model hf_url rclone="true":
     #!/usr/bin/env bash
     export HF_HUB_CACHE="/Volumes/hf-cache/huggingface/hub"
     # Store original HF_HUB_CACHE
@@ -202,9 +202,11 @@ process_single_model hf_url:
     # just mlx_create_dynamic "$model" 4 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
     # just mlx_create_dwq "$model" "5 4" "16" "2048" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
 
-    rclone copyto -P --fast-list --copy-links --transfers 32 --multi-thread-streams 32 \
-        "$HOME/.cache/huggingface/hub/$model_cache_name" \
-        "tower:hf-cache/huggingface/hub/$model_cache_name"
+    if [[ {{rclone}} == "true" ]]; then
+        rclone copyto -P --fast-list --copy-links --transfers 32 --multi-thread-streams 32 \
+            "$HOME/.cache/huggingface/hub/$model_cache_name" \
+            "tower:hf-cache/huggingface/hub/$model_cache_name"
+    fi
 
     echo "Cleaning up local cache for $model..."
     rm -rf "$HOME/.cache/huggingface/hub/$model_cache_name"
@@ -222,13 +224,6 @@ create_all:
     #!/usr/bin/env bash
     # List of models to process
     models=(
-        # janhq/Jan-v1-4B
-        # janhq/Jan-v1-2509
-        # NousResearch/Hermes-4-14B
-        # LatitudeGames/Wayfarer-2-12B
-        # LatitudeGames/Nova-70B-Llama-3.3
-        # swiss-ai/Apertus-8B-Instruct-2509
-        # swiss-ai/Apertus-70B-Instruct-2509
         # Qwen/Qwen3-0.6B
         # Qwen/Qwen3-1.7B
         # Qwen/Qwen3-4B-Instruct-2507
@@ -236,13 +231,8 @@ create_all:
         # Qwen/Qwen3-30B-A3B-Instruct-2507
         # Qwen/Qwen3-30B-A3B-Thinking-2507
         # "Qwen/Qwen3-Coder-30B-A3B-Instruct"
-        # "Qwen/Qwen3-Coder-480B-A35B-Instruct"
-        # nvidia/OpenReasoning-Nemotron-1.5B
-        # nvidia/OpenReasoning-Nemotron-7B
-        # nvidia/OpenReasoning-Nemotron-14B
-        # nvidia/OpenReasoning-Nemotron-32B
-        # nvidia/NVIDIA-Nemotron-Nano-9B-v2
-        # nvidia/NVIDIA-Nemotron-Nano-12B-v2
+        Qwen/Qwen3-Next-80B-A3B-Instruct
+        Qwen/Qwen3-Next-80B-A3B-Thinking
         # "openai/gpt-oss-20b"
         # "openai/gpt-oss-120b"
     )
