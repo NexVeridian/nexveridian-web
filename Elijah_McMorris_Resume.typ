@@ -43,7 +43,7 @@
 *EDUCATION*
 #line(length: 100%, stroke: 1pt)
 
-*Master of Science, Computer Science* #h(1fr) Aug 2025 -- Jan 2027
+*Master of Science, Computer Science* #h(1fr) Aug 2025 -- Current
 
 #h(1em) The University of Texas at Austin, Austin, TX
 
@@ -72,8 +72,8 @@
   *Loco.rs*] | A Rust MVC web framework inspired by Rails
 - #link("https://github.com/loco-rs/loco/pull/1093")[
     [\#1093]] Allows some tests to run in parallel by using different ports, decreasing test time by 65-90%
-- #link("https://github.com/loco-rs/loco/pull/1204")[
-    [\#1204]] Makes background worker tests parallel, by using different database names
+- #link("https://github.com/loco-rs/loco/pull/1397")[
+    [\#1397]] Add support for showing nested routes when listing registered controllers
 - #link("https://github.com/loco-rs/loco/pull/1360")[
     [\#1360]] Adds support for return yaml responses from routes
 - #link(
