@@ -51,6 +51,7 @@ tags = ["llm", "benchmarks", "llm-benchmarks", "lm-studio"]
 | 24       | 18          | Devstral Small 2507 | MLX  | 8      | -            | -          |
 | 20       | 124         | gpt oss             | MLX  | 5      | -            | -          |
 | 30       | 88          | qwen 3 coder        | MLX  | 5      | -            | -          |
+| 30       | 60          | qwen 3 next         | MLX  | 3      | -            | -          |
 
 # mlx convert and upload to huggingface
 https://huggingface.co/docs/hub/en/mlx
