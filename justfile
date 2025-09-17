@@ -189,7 +189,8 @@ process_single_model hf_url rclone="true":
     model_cache_name=$(echo "$model" | sed 's/\//--/g' | sed 's/^/models--/')
 
     echo "Copying $model_cache_name from NAS..."
-    rclone copyto -P --fast-list --copy-links --transfers 32 --multi-thread-streams 32 \
+    rclone copyto -P --fast-list --links --transfers 4 --multi-thread-streams 32 \
+        --exclude "tower:hf-cache/huggingface/hub/$model_cache_name/snapshots" \
         "tower:hf-cache/huggingface/hub/$model_cache_name" \
         "$HOME/.cache/huggingface/hub/$model_cache_name"
 
@@ -203,7 +204,8 @@ process_single_model hf_url rclone="true":
     # just mlx_create_dwq "$model" "5 4" "16" "2048" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
 
     if [[ {{rclone}} == "true" ]]; then
-        rclone copyto -P --fast-list --copy-links --transfers 32 --multi-thread-streams 32 \
+        rclone sync -P --fast-list --links --transfers 4 --multi-thread-streams 32 \
+            --exclude "$HOME/.cache/huggingface/hub/$model_cache_name/snapshots" \
             "$HOME/.cache/huggingface/hub/$model_cache_name" \
             "tower:hf-cache/huggingface/hub/$model_cache_name"
     fi
@@ -231,10 +233,13 @@ create_all:
         # Qwen/Qwen3-30B-A3B-Instruct-2507
         # Qwen/Qwen3-30B-A3B-Thinking-2507
         # "Qwen/Qwen3-Coder-30B-A3B-Instruct"
-        Qwen/Qwen3-Next-80B-A3B-Instruct
-        Qwen/Qwen3-Next-80B-A3B-Thinking
+        # Qwen/Qwen3-Next-80B-A3B-Instruct
+        # Qwen/Qwen3-Next-80B-A3B-Thinking
         # "openai/gpt-oss-20b"
         # "openai/gpt-oss-120b"
+        inclusionAI/Ling-mini-2.0
+        inclusionAI/Ring-mini-2.0
+        inclusionAI/Ling-flash-2.0
     )
 
     for model in "${models[@]}"; do
