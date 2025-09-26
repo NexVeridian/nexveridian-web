@@ -237,9 +237,9 @@ create_all:
         # Qwen/Qwen3-Next-80B-A3B-Thinking
         # "openai/gpt-oss-20b"
         # "openai/gpt-oss-120b"
-        inclusionAI/Ling-mini-2.0
-        inclusionAI/Ring-mini-2.0
-        inclusionAI/Ling-flash-2.0
+        # inclusionAI/Ling-mini-2.0
+        # inclusionAI/Ring-mini-2.0
+        # inclusionAI/Ling-flash-2.0
     )
 
     for model in "${models[@]}"; do
