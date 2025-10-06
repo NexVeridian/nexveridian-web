@@ -238,10 +238,23 @@ create_all:
         # "openai/gpt-oss-20b"
         # "openai/gpt-oss-120b"
         # inclusionAI/Ling-mini-2.0
-        # inclusionAI/Ring-mini-2.0
         # inclusionAI/Ling-flash-2.0
+        # inclusionAI/Ring-mini-2.0
+        # inclusionAI/Ring-flash-2.0
+        # Kwaipilot/KAT-Dev
+        # Kwaipilot/KAT-V1-40B
+        # tiiuae/Falcon-H1-0.5B-Instruct
+        # tiiuae/Falcon-H1-1.5B-Instruct
+        # tiiuae/Falcon-H1-1.5B-Deep-Instruct
+        # tiiuae/Falcon-H1-3B-Instruct
+        # tiiuae/Falcon-H1-7B-Instruct
+        # tiiuae/Falcon-H1-34B-Instruct
+        ibm-granite/granite-4.0-micro
+        ibm-granite/granite-4.0-h-micro
+        ibm-granite/granite-4.0-tiny
+        ibm-granite/granite-4.0-h-tiny
+        ibm-granite/granite-4.0-h-small
     )
-
     for model in "${models[@]}"; do
         echo "Processing model: $model"
         just process_single_model "$model"
