@@ -176,7 +176,7 @@ clean_lmstudio hf_url quant lm_studio_path org="mlx-community" type="":
         rm -r {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit{{type}} || true
     done
 
-process_single_model hf_url rclone="true":
+process_single_model hf_url rclone="false":
     #!/usr/bin/env bash
     export HF_HUB_CACHE="/Volumes/hf-cache/huggingface/hub"
     # Store original HF_HUB_CACHE
@@ -226,34 +226,24 @@ create_all:
     #!/usr/bin/env bash
     # List of models to process
     models=(
+        # zed-industries/zeta
         # Qwen/Qwen3-0.6B
         # Qwen/Qwen3-1.7B
         # Qwen/Qwen3-4B-Instruct-2507
         # Qwen/Qwen3-4B-Thinking-2507
         # Qwen/Qwen3-30B-A3B-Instruct-2507
         # Qwen/Qwen3-30B-A3B-Thinking-2507
-        # "Qwen/Qwen3-Coder-30B-A3B-Instruct"
+        # Qwen/Qwen3-Coder-30B-A3B-Instruct
         # Qwen/Qwen3-Next-80B-A3B-Instruct
         # Qwen/Qwen3-Next-80B-A3B-Thinking
-        # "openai/gpt-oss-20b"
-        # "openai/gpt-oss-120b"
-        # inclusionAI/Ling-mini-2.0
-        # inclusionAI/Ling-flash-2.0
-        # inclusionAI/Ring-mini-2.0
-        # inclusionAI/Ring-flash-2.0
-        # Kwaipilot/KAT-Dev
-        # Kwaipilot/KAT-V1-40B
-        # tiiuae/Falcon-H1-0.5B-Instruct
-        # tiiuae/Falcon-H1-1.5B-Instruct
-        # tiiuae/Falcon-H1-1.5B-Deep-Instruct
-        # tiiuae/Falcon-H1-3B-Instruct
-        # tiiuae/Falcon-H1-7B-Instruct
-        # tiiuae/Falcon-H1-34B-Instruct
-        ibm-granite/granite-4.0-micro
-        ibm-granite/granite-4.0-h-micro
-        ibm-granite/granite-4.0-tiny
-        ibm-granite/granite-4.0-h-tiny
-        ibm-granite/granite-4.0-h-small
+        # openai/gpt-oss-20b
+        # openai/gpt-oss-120b
+        # openai/gpt-oss-safeguard-20b
+        # openai/gpt-oss-safeguard-120b
+        # inclusionAI/LLaDA-MoE-7B-A1B-Instruct
+        # inclusionAI/LLaDA2.0-mini-preview
+        # inclusionAI/LLaDA2.0-flash-preview
+        # moonshotai/Kimi-Linear-48B-A3B-Instruct
     )
     for model in "${models[@]}"; do
         echo "Processing model: $model"

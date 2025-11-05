@@ -10,7 +10,7 @@ tags = ["ut-austin"]
 |----------------|----------------------------------|-------------|
 | 2025 Fall      | Case Studies in Machine Learning | Elective    |
 | 2025 Fall      | Deep Learning                    | Application |
-| 2026 Spring    | Advances in Deep Learning        | Elective    |
 | 2026 Spring    | Android Programming              | Systems     |
+| 2026 Summer    | Advances in Deep Learning        | Elective    |
 | 2026 Fall      | Parallel Systems                 | Systems     |
 | 2027 Spring    | Automated Logical Reasoning      | Theory      |

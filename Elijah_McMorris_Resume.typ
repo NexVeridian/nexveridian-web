@@ -104,7 +104,7 @@ integration
 #line(length: 100%, stroke: 1pt)
 #link("https://ark.nexveridian.com/ARK/ARKK")[
   *Ark.Nexv.dev*] | #link("https://api.nexveridian.com/")[
-  *Nexv.dev*] | *ETF Holding Tracker* | Next.js, TypeScript, Rust | #link(
+  *Api.Nexv.dev*] | *ETF Holding Tracker* | Next.js, TypeScript, Rust | #link(
   "https://github.com/NexVeridian/ark-invest-api-rust",
 )[
   [GitHub]]
