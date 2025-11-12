@@ -197,7 +197,7 @@ steps:
         keep-env-derivations = true
         keep-outputs = true
 
-  # For cacheing the attic package in github actions storage
+  # For caching the attic package in github actions storage
   - name: Restore Nix store cache
     id: cache-nix-restore
     uses: nix-community/cache-nix-action/restore@v6
@@ -210,7 +210,7 @@ steps:
   - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client cache configure <cache name> -- --priority 30 || true
   - run: nix run -I nixpkgs=channel:nixos-unstable nixpkgs#attic-client use <cache name> || true
 
-  # For cacheing the attic package in github actions storage
+  # For caching the attic package in github actions storage
   - run: nix build -I nixpkgs=channel:nixos-unstable nixpkgs#nix-fast-build
   - name: Save Nix store cache
     id: cache-nix-save

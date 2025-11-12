@@ -22,15 +22,9 @@
 #align(center)[
   #pad(top: 0pt, bottom: 0pt, [#text(16pt)[*Elijah McMorris*]])
 
-  #link("mailto:NexVeridian@gmail.com") | Seattle, WA | 425-236-8715 | #link(
-    "https://calendly.com/nexveridian/main",
-  )[Schedule a Meeting]
+  #link("mailto:NexVeridian@gmail.com") | Seattle, WA | 425-236-8715 | #link("https://calendly.com/nexveridian/main")[Schedule a Meeting]
 
-  #link("https://git.nexveridian.com/NexVeridian")[Git.Nexv.dev/NexVeridian] | #link(
-    "https://github.com/NexVeridian",
-  )[GitHub.com/NexVeridian] | #link("https://nexv.dev")[Nexv.dev] | #link(
-    "https://linkedin.com/in/NexVeridian",
-  )[LinkedIn.com/in/NexVeridian]
+  #link("https://git.nexveridian.com/NexVeridian")[Git.Nexv.dev/NexVeridian] | #link("https://github.com/NexVeridian")[GitHub.com/NexVeridian] | #link("https://nexv.dev")[Nexv.dev] | #link("https://linkedin.com/in/NexVeridian")[LinkedIn.com/in/NexVeridian]
 ]
 
 
@@ -57,9 +51,7 @@
 ])
 #line(length: 100%, stroke: 1pt)
 
-#link(
-  "https://github.com/jupyterlab/jupyterlab/issues?q=state%3Aclosed%20is%3Apr%20author%3Anexveridian%20is%3Amerged",
-)[
+#link("https://github.com/jupyterlab/jupyterlab/issues?q=state%3Aclosed%20is%3Apr%20author%3Anexveridian%20is%3Amerged")[
   *JupyterLab*] | A web IDE for notebooks, code, and data science
 - #link("https://github.com/jupyterlab/jupyterlab/pull/16341")[
     [\#16341]] Adds a button that finds and shuts down kernels that are not attached to an open notebook
@@ -93,9 +85,7 @@ integration
     [\#25606]] Fixes showing the max_tokens for each model in the assistant panel
 
 #link("https://github.com/search?q=is%3Apr+author%3ANexVeridian+docs&type=pullrequests")[
-  +12 documentation PRs] to multiple projects and #link(
-  "https://github.com/NixOS/nixpkgs/pulls?q=is%3Apr+author%3ANexVeridian+",
-)[
+  +12 documentation PRs] to multiple projects and #link("https://github.com/NixOS/nixpkgs/pulls?q=is%3Apr+author%3ANexVeridian+")[
   PRs to Nixpkgs]
 
 #pad(top: 1em, bottom: 0em, [
@@ -104,9 +94,7 @@ integration
 #line(length: 100%, stroke: 1pt)
 #link("https://ark.nexveridian.com/ARK/ARKK")[
   *Ark.Nexv.dev*] | #link("https://api.nexveridian.com/")[
-  *Api.Nexv.dev*] | *ETF Holding Tracker* | Next.js, TypeScript, Rust | #link(
-  "https://github.com/NexVeridian/ark-invest-api-rust",
-)[
+  *Api.Nexv.dev*] | *ETF Holding Tracker* | Next.js, TypeScript, Rust | #link("https://github.com/NexVeridian/ark-invest-api-rust")[
   [GitHub]]
 - Created and retrieves data from a REST API for the holdings of 25 ETFs and updated daily
 - Visualizes it in an interactive chart, showing the ETF holdings over time
@@ -120,14 +108,10 @@ integration
   *SKILLS*
 ])
 #line(length: 100%, stroke: 1pt)
-*Languages*: Rust, TypeScript, Python, JavaScript, Java, SQL, Nix, HTML, CSS
+*Languages*: Rust, TypeScript, Python, SQL, Nix, JavaScript, Java
 
 *Developer Tools*: Docker, Git, GitHub, SSH, Cloudflare, AWS, Azure, VPS, Docker Compose
 
-*Libraries*: Next.js, React, MySQL, Postgres, RDBMS, Tailwind CSS, Traefik, Nginx, Pandas, Numpy, Spark, Django, Flask,
-MVC, Shadcn/ui, Swagger, Redoc, Axum, Polars, GitHub Actions
+*Libraries*: MySQL, Postgres, Traefik, Nginx, Pandas, Numpy, Spark, Django, Flask, OpenAPI, Axum, Polars, GitHub Actions
 
-*Certifications*: Microsoft Office Specialist: Excel (Office 2016) - MOS Exam 77-727 #link(
-  "https://www.credly.com/badges/8facfa32-3a3d-46bf-9e68-f1caad0f7801/public_url",
-)[
-  [Credly]]
+*Certifications*: Microsoft Office Specialist: Excel (Office 2016) - MOS Exam 77-727 #link("https://www.credly.com/badges/8facfa32-3a3d-46bf-9e68-f1caad0f7801/public_url")[[Credly]]

@@ -6,7 +6,7 @@ date = 2025-07-15
 tags = ["ut-austin"]
 +++
 
-| Semester       | Course Name                      | Categorie   |
+| Semester       | Course Name                      | Category    |
 |----------------|----------------------------------|-------------|
 | 2025 Fall      | Case Studies in Machine Learning | Elective    |
 | 2025 Fall      | Deep Learning                    | Application |

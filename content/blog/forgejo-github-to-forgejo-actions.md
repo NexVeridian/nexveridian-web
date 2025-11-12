@@ -7,7 +7,7 @@ tags = ["forgejo", "nix", "CI", "actions", "docker"]
 +++
 
 ## Forgejo Actions
-Most actions are the mostly the same, but some things, like conncrurrency groups don't work.
+Most actions are the mostly the same, but some things, like concurrency groups don't work.
 
 ```yaml
 name: nix
