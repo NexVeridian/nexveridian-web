@@ -28,67 +28,68 @@ uv_install:
     # uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken blobfile
     uv pip install -U huggingface_hub hf_transfer "git+https://github.com/ml-explore/mlx-lm@main" "git+https://github.com/ml-explore/mlx-lm@main[train]" tiktoken blobfile
 
-# just mlx_create "Qwen/Qwen3-30B-A3B-Instruct" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
+# just mlx_create "cerebras/Qwen3-Coder-REAP-25B-A3B" "8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian false false
 mlx_create hf_url quant lm_studio_path org="mlx-community" upload_repo="false" clean="true":
     #!/usr/bin/env bash
     just uv_install
-    repo_name=$(basename {{hf_url}})
-    just clean_lmstudio "{{hf_url}}" "{{quant}}" "{{lm_studio_path}}" "{{org}}"
+    repo_name=$(basename {{ hf_url }})
+    just clean_lmstudio "{{ hf_url }}" "{{ quant }}" "{{ lm_studio_path }}" "{{ org }}"
 
-    for q in {{quant}}; do
-        rm {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit
+    for q in {{ quant }}; do
+        rm {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit
 
-        echo -e '\nConverting {{hf_url}} to '"$q"'-bit quantization\n'
-        if [[ {{upload_repo}} == "true" ]]; then
+        echo -e '\nConverting {{ hf_url }} to '"$q"'-bit quantization\n'
+        if [[ {{ upload_repo }} == "true" ]]; then
             uv run mlx_lm.convert \
-                --hf-path {{hf_url}} \
+                --hf-path {{ hf_url }} \
                 -q \
                 --q-bits ${q} \
                 --trust-remote-code \
-                --upload-repo {{org}}/${repo_name}-${q}bit \
-                --mlx-path {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit
+                --upload-repo {{ org }}/${repo_name}-${q}bit \
+                --mlx-path {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit
         else
             uv run mlx_lm.convert \
-                --hf-path {{hf_url}} \
+                --hf-path {{ hf_url }} \
                 -q \
                 --q-bits ${q} \
                 --trust-remote-code \
-                --mlx-path {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit
+                --mlx-path {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit
         fi
 
-        if [[ {{clean}} == "true" ]]; then
-            just clean_lmstudio "{{hf_url}}" "{{quant}}" "{{lm_studio_path}}" "{{org}}"
+        if [[ {{ clean }} == "true" ]]; then
+            just clean_lmstudio "{{ hf_url }}" "{{ quant }}" "{{ lm_studio_path }}" "{{ org }}"
         fi
     done
 
-# just mlx_create_dynamic "Qwen/Qwen3-14B" 4 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
+# just mlx_create_dynamic "cerebras/Qwen3-Coder-REAP-25B-A3B" 4 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
 # https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LEARNED_QUANTS.md
+
 # https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/quant/dynamic_quant.py
 mlx_create_dynamic hf_url low high lm_studio_path org="mlx-community" upload_repo="false" clean="true":
     #!/usr/bin/env bash
     just uv_install
-    repo_name=$(basename {{hf_url}})
-    rm -r {{lm_studio_path}}/{{org}}/${repo_name} || true
+    repo_name=$(basename {{ hf_url }})
+    rm -r {{ lm_studio_path }}/{{ org }}/${repo_name} || true
 
-    org_name=$(echo "{{hf_url}}" | cut -d'/' -f1)
-    sanitized_name="${org_name}_$(basename {{hf_url}})"
+    org_name=$(echo "{{ hf_url }}" | cut -d'/' -f1)
+    sanitized_name="${org_name}_$(basename {{ hf_url }})"
     sensitivity_file="sensitivities/${sanitized_name}_sensitivities.json"
 
     if [[ -f "$sensitivity_file" ]]; then
         uv run mlx_lm.dynamic_quant \
-            --model {{hf_url}} \
-            --low-bits {{low}} \
-            --high-bits {{high}} \
+            --model {{ hf_url }} \
+            --low-bits {{ low }} \
+            --high-bits {{ high }} \
             --accumulation-dtype bfloat16 \
             --sensitivities "$sensitivity_file" \
-            --mlx-path {{lm_studio_path}}/{{org}}/${repo_name}
+            --mlx-path {{ lm_studio_path }}/{{ org }}/${repo_name}
     else
         uv run mlx_lm.dynamic_quant \
-            --model {{hf_url}} \
-            --low-bits {{low}} \
-            --high-bits {{high}} \
+            --model {{ hf_url }} \
+            --low-bits {{ low }} \
+            --high-bits {{ high }} \
             --accumulation-dtype bfloat16 \
-            --mlx-path {{lm_studio_path}}/{{org}}/${repo_name}
+            --mlx-path {{ lm_studio_path }}/{{ org }}/${repo_name}
     fi
 
     if [[ -f "${sanitized_name}_sensitivities.json" ]]; then
@@ -96,70 +97,72 @@ mlx_create_dynamic hf_url low high lm_studio_path org="mlx-community" upload_rep
         echo "Saved sensitivities to $sensitivity_file"
     fi
 
-    if [[ {{upload_repo}} == "true" ]]; then
+    if [[ {{ upload_repo }} == "true" ]]; then
         uv run mlx_lm.upload \
-            --path {{lm_studio_path}}/{{org}}/${repo_name} \
-            --upload-repo {{org}}/${repo_name}-{{low}}bit-{{high}}bit
+            --path {{ lm_studio_path }}/{{ org }}/${repo_name} \
+            --upload-repo {{ org }}/${repo_name}-{{ low }}bit-{{ high }}bit
     fi
 
-    if [[ {{clean}} == "true" ]]; then
-        rm -r {{lm_studio_path}}/{{org}}/${repo_name} || true
+    if [[ {{ clean }} == "true" ]]; then
+        rm -r {{ lm_studio_path }}/{{ org }}/${repo_name} || true
     fi
 
-
-# just mlx_create_dwq "Qwen/Qwen3-30B-A3B" "4" "8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
+# just mlx_create_dwq "cerebras/Qwen3-Coder-REAP-25B-A3B" "5" "8" "128" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
 # https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LEARNED_QUANTS.md
+
 # https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/quant/dwq.py
-mlx_create_dwq hf_url quant teacher_q samples lm_studio_path org="mlx-community" upload_repo="false" clean="true" :
+mlx_create_dwq hf_url quant teacher_q samples lm_studio_path org="mlx-community" upload_repo="false" clean="true":
     #!/usr/bin/env bash
     just uv_install
-    repo_name=$(basename {{hf_url}})
+    repo_name=$(basename {{ hf_url }})
 
-    if [[ "{{teacher_q}}" == "16" ]]; then
-        for q in {{quant}}; do
-            echo -e '\nConverting {{hf_url}} to '"$q"'-bit DWQ quantization\n'
-            just clean_lmstudio "{{hf_url}}" "{{quant}}" "{{lm_studio_path}}" "{{org}}" "-DWQ"
+    if [[ "{{ teacher_q }}" == "16" ]]; then
+        for q in {{ quant }}; do
+            echo -e '\nConverting {{ hf_url }} to '"$q"'-bit DWQ quantization\n'
+            just clean_lmstudio "{{ hf_url }}" "{{ quant }}" "{{ lm_studio_path }}" "{{ org }}" "-DWQ"
 
             uv run mlx_lm.dwq \
-                --model {{hf_url}} \
+                --model {{ hf_url }} \
                 --bits ${q} \
-                --num-samples {{samples}} \
+                --num-samples {{ samples }} \
                 --batch-size 1 \
-                --mlx-path {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit-DWQ
+                --max-seq-length 512 \
+                --mlx-path {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit-DWQ
 
-            if [[ {{upload_repo}} == "true" ]]; then
+            if [[ {{ upload_repo }} == "true" ]]; then
                 uv run mlx_lm.upload \
-                    --path {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit-DWQ \
-                    --upload-repo {{org}}/${repo_name}-${q}bit-DWQ
+                    --path {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit-DWQ \
+                    --upload-repo {{ org }}/${repo_name}-${q}bit-DWQ
             fi
 
-            if [[ {{clean}} == "true" ]]; then
-                just clean_lmstudio "{{hf_url}}" "{{quant}}" "{{lm_studio_path}}" "{{org}}" "-DWQ"
+            if [[ {{ clean }} == "true" ]]; then
+                just clean_lmstudio "{{ hf_url }}" "{{ quant }}" "{{ lm_studio_path }}" "{{ org }}" "-DWQ"
             fi
         done
     else
-        for q in {{quant}}; do
-            echo -e '\nConverting {{hf_url}} to '"$q"'-bit DWQ quantization, with teacher_q = {{teacher_q}}\n'
-            just clean_lmstudio "{{hf_url}}" "{{quant}}" "{{lm_studio_path}}" "{{org}}" "-DWQ-{{teacher_q}}bit"
+        for q in {{ quant }}; do
+            echo -e '\nConverting {{ hf_url }} to '"$q"'-bit DWQ quantization, with teacher_q = {{ teacher_q }}\n'
+            just clean_lmstudio "{{ hf_url }}" "{{ quant }}" "{{ lm_studio_path }}" "{{ org }}" "-DWQ-{{ teacher_q }}bit"
 
-            just mlx_create "{{hf_url}}" "{{teacher_q}}" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian false true
+            just mlx_create "{{ hf_url }}" "{{ teacher_q }}" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian false true
 
             uv run mlx_lm.dwq \
-                --model {{hf_url}} \
-                --quantized-model {{org}}/${repo_name}-{{teacher_q}}bit \
+                --model {{ hf_url }} \
+                --quantized-model {{ org }}/${repo_name}-{{ teacher_q }}bit \
                 --bits ${q} \
-                --num-samples {{samples}} \
+                --num-samples {{ samples }} \
                 --batch-size 1 \
-                --mlx-path {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit-DWQ-{{teacher_q}}bit
+                --max-seq-length 512 \
+                --mlx-path {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit-DWQ-{{ teacher_q }}bit
 
-            if [[ {{upload_repo}} == "true" ]]; then
+            if [[ {{ upload_repo }} == "true" ]]; then
                 uv run mlx_lm.upload \
-                    --path {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit-DWQ-{{teacher_q}}bit \
-                    --upload-repo {{org}}/${repo_name}-${q}bit-DWQ-{{teacher_q}}bit
+                    --path {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit-DWQ-{{ teacher_q }}bit \
+                    --upload-repo {{ org }}/${repo_name}-${q}bit-DWQ-{{ teacher_q }}bit
             fi
 
-            if [[ {{clean}} == "true" ]]; then
-                just clean_lmstudio "{{hf_url}}" "{{quant}}" "{{lm_studio_path}}" "{{org}}" "-DWQ-{{teacher_q}}bit"
+            if [[ {{ clean }} == "true" ]]; then
+                just clean_lmstudio "{{ hf_url }}" "{{ quant }}" "{{ lm_studio_path }}" "{{ org }}" "-DWQ-{{ teacher_q }}bit"
             fi
         done
     fi
@@ -170,10 +173,10 @@ clean_hf:
 # just clean_lmstudio "Qwen/QwQ-32B" "4 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian "-DWQ"
 clean_lmstudio hf_url quant lm_studio_path org="mlx-community" type="":
     #!/usr/bin/env bash
-    repo_name=$(basename {{hf_url}})
+    repo_name=$(basename {{ hf_url }})
 
-    for q in {{quant}}; do
-        rm -r {{lm_studio_path}}/{{org}}/${repo_name}-${q}bit{{type}} || true
+    for q in {{ quant }}; do
+        rm -r {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit{{ type }} || true
     done
 
 process_single_model hf_url rclone="false":
@@ -182,7 +185,7 @@ process_single_model hf_url rclone="false":
     # Store original HF_HUB_CACHE
     ORIGINAL_HF_HUB_CACHE="${HF_HUB_CACHE:-}"
 
-    model="{{hf_url}}"
+    model="{{ hf_url }}"
     echo "Processing model: $model"
 
     # Convert model path to cache directory format (org--model)
@@ -203,7 +206,7 @@ process_single_model hf_url rclone="false":
     # just mlx_create_dynamic "$model" 4 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
     # just mlx_create_dwq "$model" "5 4" "16" "2048" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
 
-    if [[ {{rclone}} == "true" ]]; then
+    if [[ {{ rclone }} == "true" ]]; then
         rclone sync -P --fast-list --links --transfers 4 --multi-thread-streams 32 \
             --exclude "$HOME/.cache/huggingface/hub/$model_cache_name/snapshots" \
             "$HOME/.cache/huggingface/hub/$model_cache_name" \
@@ -226,24 +229,13 @@ create_all:
     #!/usr/bin/env bash
     # List of models to process
     models=(
+        # cerebras/Qwen3-Coder-REAP-25B-A3B
+        # cerebras/Kimi-Linear-REAP-35B-A3B-Instruct
+        # cerebras/GLM-4.5-Air-REAP-82B-A12B
         # zed-industries/zeta
-        # Qwen/Qwen3-0.6B
-        # Qwen/Qwen3-1.7B
-        # Qwen/Qwen3-4B-Instruct-2507
-        # Qwen/Qwen3-4B-Thinking-2507
-        # Qwen/Qwen3-30B-A3B-Instruct-2507
-        # Qwen/Qwen3-30B-A3B-Thinking-2507
-        # Qwen/Qwen3-Coder-30B-A3B-Instruct
         # Qwen/Qwen3-Next-80B-A3B-Instruct
         # Qwen/Qwen3-Next-80B-A3B-Thinking
         # openai/gpt-oss-20b
-        # openai/gpt-oss-120b
-        # openai/gpt-oss-safeguard-20b
-        # openai/gpt-oss-safeguard-120b
-        # inclusionAI/LLaDA-MoE-7B-A1B-Instruct
-        # inclusionAI/LLaDA2.0-mini-preview
-        # inclusionAI/LLaDA2.0-flash-preview
-        # moonshotai/Kimi-Linear-48B-A3B-Instruct
     )
     for model in "${models[@]}"; do
         echo "Processing model: $model"
