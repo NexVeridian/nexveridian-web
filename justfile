@@ -7,9 +7,23 @@ update:
 watch:
     typst watch Elijah_McMorris_Resume.typ
 
+watch2:
+    typst watch Elijah_McMorris_Resume_.typ
+
 pdf:
     typst compile Elijah_McMorris_Resume.typ
+    typst compile Elijah_McMorris_Resume_.typ
+    typstyle -i --wrap-text -l 100 Elijah_McMorris_Resume.typ
+    typstyle -i --wrap-text -l 100 Elijah_McMorris_Resume_.typ
+
     mv Elijah_McMorris_Resume.pdf static/
+    typst compile Elijah_McMorris_Resume.typ
+    mv Elijah_McMorris_Resume.pdf /Users/elijahmcmorris/Desktop/Stuff/Excel/
+
+    mv Elijah_McMorris_Resume_.pdf /Users/elijahmcmorris/Desktop/Stuff/Excel/
+
+    typst compile Elijah_McMorris_Resume.typ
+    typst compile Elijah_McMorris_Resume_.typ
 
 docker:
     nix build .#packages.x86_64-linux.my-docker
@@ -231,10 +245,7 @@ create_all:
     models=(
         # cerebras/Qwen3-Coder-REAP-25B-A3B
         # cerebras/Kimi-Linear-REAP-35B-A3B-Instruct
-        # cerebras/GLM-4.5-Air-REAP-82B-A12B
-        # zed-industries/zeta
-        # Qwen/Qwen3-Next-80B-A3B-Instruct
-        # Qwen/Qwen3-Next-80B-A3B-Thinking
+        cerebras/GLM-4.7-REAP-218B-A32B
         # openai/gpt-oss-20b
     )
     for model in "${models[@]}"; do
