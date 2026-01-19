@@ -42,7 +42,9 @@ uv_install:
     # uv pip install -U huggingface_hub hf_transfer mlx_lm "mlx_lm[train]" tiktoken blobfile
     uv pip install -U huggingface_hub hf_transfer "git+https://github.com/ml-explore/mlx-lm@main" "git+https://github.com/ml-explore/mlx-lm@main[train]" tiktoken blobfile
 
-# just mlx_create "cerebras/Qwen3-Coder-REAP-25B-A3B" "8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian false false
+# just mlx_create "cerebras/GLM-4.7-Flash-REAP-23B-A3B" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
+
+# just mlx_create "cerebras/GLM-4.7-Flash-REAP-23B-A3B" "8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian false false
 mlx_create hf_url quant lm_studio_path org="mlx-community" upload_repo="false" clean="true":
     #!/usr/bin/env bash
     just uv_install
@@ -243,10 +245,10 @@ create_all:
     #!/usr/bin/env bash
     # List of models to process
     models=(
+        # zai-org/GLM-4.7-Flash
+        # cerebras/GLM-4.7-Flash-REAP-23B-A3B
         # cerebras/Qwen3-Coder-REAP-25B-A3B
         # cerebras/Kimi-Linear-REAP-35B-A3B-Instruct
-        cerebras/GLM-4.7-REAP-218B-A32B
-        # openai/gpt-oss-20b
     )
     for model in "${models[@]}"; do
         echo "Processing model: $model"
