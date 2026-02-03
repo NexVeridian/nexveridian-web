@@ -44,7 +44,7 @@ uv_install:
 
 # just mlx_create "cerebras/GLM-4.7-Flash-REAP-23B-A3B" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true false
 
-# just mlx_create "cerebras/GLM-4.7-Flash-REAP-23B-A3B" "8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian false false
+# just mlx_create "Qwen/Qwen3-Coder-Next" "4" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian false false
 mlx_create hf_url quant lm_studio_path org="mlx-community" upload_repo="false" clean="true":
     #!/usr/bin/env bash
     just uv_install
@@ -195,7 +195,7 @@ clean_lmstudio hf_url quant lm_studio_path org="mlx-community" type="":
         rm -r {{ lm_studio_path }}/{{ org }}/${repo_name}-${q}bit{{ type }} || true
     done
 
-process_single_model hf_url rclone="false":
+process_single_model hf_url rclone="false" clean="true":
     #!/usr/bin/env bash
     export HF_HUB_CACHE="/Volumes/hf-cache/huggingface/hub"
     # Store original HF_HUB_CACHE
@@ -229,8 +229,10 @@ process_single_model hf_url rclone="false":
             "tower:hf-cache/huggingface/hub/$model_cache_name"
     fi
 
-    echo "Cleaning up local cache for $model..."
-    rm -rf "$HOME/.cache/huggingface/hub/$model_cache_name"
+    if [[ {{ clean }} == "true" ]]; then
+        echo "Cleaning up local cache for $model..."
+        rm -rf "$HOME/.cache/huggingface/hub/$model_cache_name"
+    fi
 
     # Reset HF_HUB_CACHE to original value
     if [[ -n "$ORIGINAL_HF_HUB_CACHE" ]]; then
@@ -241,18 +243,21 @@ process_single_model hf_url rclone="false":
 
     echo "Completed processing $model"
 
-create_all:
+create_all clean="true":
     #!/usr/bin/env bash
     # List of models to process
     models=(
         # zai-org/GLM-4.7-Flash
         # cerebras/GLM-4.7-Flash-REAP-23B-A3B
         # cerebras/Qwen3-Coder-REAP-25B-A3B
-        # cerebras/Kimi-Linear-REAP-35B-A3B-Instruct
+        # Qwen/Qwen3-Coder-Next
+        cerebras/Kimi-Linear-REAP-35B-A3B-Instruct
     )
     for model in "${models[@]}"; do
         echo "Processing model: $model"
-        just process_single_model "$model"
+        just process_single_model "$model" {{ clean }}
     done
 
-    just clean_hf || true
+    if [[ {{ clean }} == "true" ]]; then
+        just clean_hf || true
+    fi
