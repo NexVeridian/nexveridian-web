@@ -72,7 +72,7 @@
     [\#16208]] Fix to correctly clear the output area of a cell in the notebook
 
 #link(
-  "https://github.com/loco-rs/loco/issues?q=is%3Apr%20author%3Anexveridian%20(is%3Amerged%20OR%20is%3Aopen%20)",
+  "https://github.com/loco-rs/loco/issues?q=is%3Apr%20author%3Anexveridian%20is%3Amerged",
 )[
   *Loco.rs*] | A Rust MVC web framework inspired by Rails
 - #link("https://github.com/loco-rs/loco/pull/1093")[
@@ -83,7 +83,7 @@
 - #link("https://github.com/loco-rs/loco/pull/1360")[
     [\#1360]] Adds support for return yaml responses from routes
 - #link(
-    "https://github.com/loco-rs/loco/issues?q=is%3Apr%20author%3Anexveridian%20(is%3Amerged%20OR%20is%3Aopen%20)",
+    "https://github.com/loco-rs/loco/issues?q=is%3Apr%20author%3Anexveridian%20is%3Amerged",
   )[
     +15 more PRs]
 
