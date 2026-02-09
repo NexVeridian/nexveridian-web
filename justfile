@@ -217,10 +217,10 @@ process_single_model hf_url rclone="false" clean="true":
     export HF_HUB_CACHE="$HOME/.cache/huggingface/hub"
 
     echo "Processing quantizations for $model..."
-    just mlx_create "$model" "3 4 5 6 8" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
-    # just mlx_create_dynamic "$model" 5 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
-    # just mlx_create_dynamic "$model" 4 8 "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
-    # just mlx_create_dwq "$model" "5 4" "16" "2048" "/Users/elijahmcmorris/.cache/lm-studio/models" NexVeridian true true
+    just mlx_create "$model" "4 5 6 8" "/Users/elijahmcmorris/.cache/models" NexVeridian true true
+    # just mlx_create_dynamic "$model" 5 8 "/Users/elijahmcmorris/.cache/models" NexVeridian true true
+    # just mlx_create_dynamic "$model" 4 8 "/Users/elijahmcmorris/.cache/models" NexVeridian true true
+    # just mlx_create_dwq "$model" "5 4" "16" "2048" "/Users/elijahmcmorris/.cache/models" NexVeridian true true
 
     if [[ {{ rclone }} == "true" ]]; then
         rclone sync -P --fast-list --links --transfers 4 --multi-thread-streams 32 \
@@ -249,9 +249,7 @@ create_all clean="true":
     models=(
         # zai-org/GLM-4.7-Flash
         # cerebras/GLM-4.7-Flash-REAP-23B-A3B
-        # cerebras/Qwen3-Coder-REAP-25B-A3B
         # Qwen/Qwen3-Coder-Next
-        cerebras/Kimi-Linear-REAP-35B-A3B-Instruct
     )
     for model in "${models[@]}"; do
         echo "Processing model: $model"
@@ -260,4 +258,36 @@ create_all clean="true":
 
     if [[ {{ clean }} == "true" ]]; then
         just clean_hf || true
+        just hf-cleanup || true
     fi
+
+# just hf-cleanup "NexVeridian" 30 5 "model"
+
+# just hf-cleanup "NexVeridian" 30 5 "model dataset space"
+hf-cleanup username="NexVeridian" days="30" min_downloads="5" repo_types="model":
+    #!/usr/bin/env -S uv run --script
+    from datetime import datetime, timedelta, timezone
+    from huggingface_hub import HfApi, delete_repo
+
+    api = HfApi()
+    cutoff = datetime.now(timezone.utc) - timedelta(days={{ days }})
+
+    list_methods = {
+        "model": api.list_models,
+        "dataset": api.list_datasets,
+        "space": api.list_spaces,
+    }
+
+    for repo_type in "{{ repo_types }}".split():
+        if repo_type not in list_methods:
+            print(f"Unknown repo type: {repo_type}")
+            continue
+
+        for r in list_methods[repo_type](author="{{ username }}", full=True):
+            created_at = r.created_at
+            updated_at = r.last_modified
+            downloads = getattr(r, 'downloads', 0) or 0
+
+            if created_at and updated_at and created_at < cutoff and updated_at < cutoff and downloads < {{ min_downloads }}:
+                print("Deleting", repo_type, r.id, "| Created:", created_at, "| Updated:", updated_at, "| Downloads:", downloads)
+                delete_repo(repo_id=r.id, repo_type=repo_type)
