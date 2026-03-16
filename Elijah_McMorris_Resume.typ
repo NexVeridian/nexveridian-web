@@ -40,8 +40,14 @@
 )
 #set list(marker: [#h(0.5em)#text(size: 10pt)[◆]#h(0.5em)], indent: 1em)
 
+*EXPERIENCE*
+#line(length: 100%, stroke: 1pt)
 
-*EDUCATION*
+*Founding Software Engineer* - #link("https://drswarm.com/")[DrSwarm] #h(1fr) Apr 2026 - Present
+
+#pad(top: 0.5em, bottom: 0em, [
+  *EDUCATION*
+])
 #line(length: 100%, stroke: 1pt)
 
 *Master of Science, Computer Science* #h(1fr) Aug 2025 - Expected By Dec 2028
@@ -53,7 +59,7 @@
 #h(1em) Lake Washington Institute of Technology, Kirkland, WA, GPA 3.57
 
 
-#pad(top: 1em, bottom: 0em, [
+#pad(top: 0.5em, bottom: 0em, [
   *OPEN SOURCE*
 ])
 #line(length: 100%, stroke: 1pt)
@@ -103,7 +109,7 @@
   "https://github.com/search?q=author%3ANexVeridian+is%3Apublic+is%3Apr+is%3Amerged+-org%3Aloco-rs&type=pullrequests&p=1",
 )[+15 documentation PRs and PRs with smaller changes across various projects]
 
-#pad(top: 1em, bottom: 0em, [
+#pad(top: 0.5em, bottom: 0em, [
   *PROJECTS*
 ])
 #line(length: 100%, stroke: 1pt)
@@ -112,18 +118,13 @@
   *Api.Nexv.dev*] | *ETF Holding Tracker* | Next.js, TypeScript, Rust | #link(
   "https://git.nexv.dev/NexVeridian/ark-invest-api-rust",
 )[
-  [GitHub]]
+  [Git]]
 - Created and retrieves data from a REST API for the holdings of 25 ETFs and updated daily
 - Visualizes it in an interactive chart, showing the ETF holdings over time
 - Frontend is written in Next.js, using Tailwind, Chart.js, TanStack Table, Shadcn/ui
 - Backend is written in Rust using Axum, Polars, and Redoc
-*Wikidata To Surrealdb* | Rust #link(
-  "https://git.nexv.dev/NexVeridian/wikidata-to-surrealdb",
-)[
-  [GitHub]]
-- Created a tool for converting Wikidata BZ2 or JSON data dumps, to a SurrealDB database
 
-#pad(top: 1em, bottom: 0em, [
+#pad(top: 0.5em, bottom: 0em, [
   *SKILLS*
 ])
 #line(length: 100%, stroke: 1pt)

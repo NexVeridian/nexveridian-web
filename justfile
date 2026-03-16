@@ -261,7 +261,17 @@ create_all clean="true":
         # Qwen/Qwen3.5-27B
         # Qwen/Qwen3.5-35B-A3B
         # Qwen/Qwen3.5-122B-A10B
-        # nvidia/Nemotron-Cascade-2-30B-A3B
+        Qwen/Qwen3.6-35B-A3B
+        # Tesslate/OmniCoder-2-9B
+        # zed-industries/zeta-2
+        # google/gemma-4-E2B
+        # google/gemma-4-E2B-it
+        # google/gemma-4-E4B
+        # google/gemma-4-E4B-it
+        # google/gemma-4-26B-A4b
+        # google/gemma-4-26B-A4b-it
+        # google/gemma-4-31B
+        # google/gemma-4-31B-it
     )
     for model in "${models[@]}"; do
         echo "Processing model: $model"
@@ -276,7 +286,7 @@ create_all clean="true":
 # just hf-cleanup "NexVeridian" 30 5 "model"
 
 # just hf-cleanup "NexVeridian" 30 5 "model dataset space"
-hf-cleanup username="NexVeridian" days="30" min_downloads="10" repo_types="model":
+hf-cleanup username="NexVeridian" days="30" min_downloads="50" repo_types="model":
     #!/usr/bin/env -S uv run --script
     from datetime import datetime, timedelta, timezone
     from huggingface_hub import HfApi, delete_repo

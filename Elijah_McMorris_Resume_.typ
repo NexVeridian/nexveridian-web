@@ -51,7 +51,7 @@
 
 #h(1em) Lake Washington Institute of Technology, Kirkland, WA, GPA 3.57
 
-#pad(top: 1em, bottom: 0em, [
+#pad(top: 0.5em, bottom: 0em, [
   *CERTIFICATIONS*
 ])
 #line(length: 100%, stroke: 1pt)
@@ -59,7 +59,7 @@ Microsoft Office Specialist: Excel Associate - MOS Exam 77-727 #link(
   "https://www.credly.com/badges/8facfa32-3a3d-46bf-9e68-f1caad0f7801/public_url",
 )[[Credly]]
 
-#pad(top: 1em, bottom: 0em, [
+#pad(top: 0.5em, bottom: 0em, [
   *SKILLS*
 ])
 #line(length: 100%, stroke: 1pt)
