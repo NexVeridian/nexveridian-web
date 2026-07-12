@@ -253,25 +253,22 @@ create_all clean="true":
     #!/usr/bin/env bash
     # List of models to process
     models=(
-        # Qwen/Qwen3-Coder-Next
-        # Qwen/Qwen3.5-0.8B
-        # Qwen/Qwen3.5-2B
-        # Qwen/Qwen3.5-4B
-        # Qwen/Qwen3.5-9B
-        # Qwen/Qwen3.5-27B
-        # Qwen/Qwen3.5-35B-A3B
-        # Qwen/Qwen3.5-122B-A10B
-        Qwen/Qwen3.6-35B-A3B
-        # Tesslate/OmniCoder-2-9B
-        # zed-industries/zeta-2
-        # google/gemma-4-E2B
-        # google/gemma-4-E2B-it
-        # google/gemma-4-E4B
-        # google/gemma-4-E4B-it
-        # google/gemma-4-26B-A4b
-        # google/gemma-4-26B-A4b-it
-        # google/gemma-4-31B
-        # google/gemma-4-31B-it
+        LatitudeGames/Equinox-31B
+        Qwen/Qwen3-Coder-Next
+        zed-industries/zeta-2
+        zed-industries/zeta-2.1
+        google/gemma-4-E2B
+        google/gemma-4-E2B-it
+        google/gemma-4-E4B
+        google/gemma-4-E4B-it
+        google/gemma-4-12B
+        google/gemma-4-12B-it
+        google/gemma-4-26B-A4b
+        google/gemma-4-26B-A4b-it
+        google/gemma-4-31B
+        google/gemma-4-31B-it
+        nex-agi/Nex-N2-mini
+        nex-agi/Nex-N2-Pro
     )
     for model in "${models[@]}"; do
         echo "Processing model: $model"
